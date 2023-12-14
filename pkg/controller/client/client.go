@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/paralus/paralus/pkg/controller/scheme"
+	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -21,7 +22,12 @@ func New() (client.Client, error) {
 		return nil, err
 	}
 
-	mapper, err := apiutil.NewDynamicRESTMapper(config)
+	httpClient, err := rest.HTTPClientFor(config)
+	if err != nil {
+		return nil, err
+	}
+
+	mapper, err := apiutil.NewDynamicRESTMapper(config, httpClient)
 	if err != nil {
 		return nil, err
 	}

@@ -39,7 +39,7 @@ func NewConfigMapLock(lockName, lockNamespace, id string) (rl.Interface, error) 
 		return nil, err
 	}
 
-	return rl.New(rl.ConfigMapsResourceLock,
+	return rl.New(rl.LeasesResourceLock,
 		lockNamespace,
 		lockName,
 		client.CoreV1(),
